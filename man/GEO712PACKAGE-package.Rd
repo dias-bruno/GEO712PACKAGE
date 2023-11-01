@@ -4,9 +4,9 @@
 \name{GEO712PACKAGE-package}
 \alias{GEO712PACKAGE}
 \alias{GEO712PACKAGE-package}
-\title{GEO712PACKAGE: What the Package Does (Title Case)}
+\title{GEO712PACKAGE: A R package for the GEO712 course at McMAster University}
 \description{
-More about what it does (maybe more than one line) Use four spaces when indenting paragraphs within the Description.
+In this R package we present a methodology to perform a multiple linear regression and sharing the data files. We use data from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
 }
 \seealso{
 Useful links:

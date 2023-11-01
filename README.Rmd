@@ -15,10 +15,7 @@ knitr::opts_chunk$set(
 
 # GEO712PACKAGE
 
-<!-- badges: start -->
-<!-- badges: end -->
-
-The goal of GEO712PACKAGE is to ...
+The GEO712PACKAGE is a test R package created for the GEO712 course at McMaster University. In this R package we share the processed data of a multiple regression model. We use data from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
 
 ## Installation
 
@@ -31,25 +28,27 @@ devtools::install_github("dias-bruno/GEO712PACKAGE")
 
 ## Example
 
-This is a basic example which shows you how to solve a common problem:
+This is a basic example which shows you how to access the data files. First, we'll need call the library "GEO712PACKAGE:
 
 ```{r example}
 library(GEO712PACKAGE)
-## basic example code
 ```
 
-What is special about using `README.Rmd` instead of just `README.md`? You can include R chunks like so:
+Accessing the data:
 
-```{r cars}
-summary(cars)
+```{r}
+data(df)
+houses <- df
 ```
 
-You'll still need to render `README.Rmd` regularly, to keep `README.md` up-to-date. `devtools::build_readme()` is handy for this.
+Visualizing the summary of the data:
 
-You can also embed plots, for example:
-
-```{r pressure, echo = FALSE}
-plot(pressure)
+```{r}
+summary(houses)
 ```
 
-In that case, don't forget to commit and push the resulting figure files, so they display on GitHub and CRAN.
+Now, we already have access to the data and we can create some graphs about the data:
+
+```{r}
+plot(houses$price, houses$yr_built, xlab = "Price of the house", ylab = "Year of build")
+```
