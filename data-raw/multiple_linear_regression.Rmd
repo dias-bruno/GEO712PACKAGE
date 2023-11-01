@@ -1,0 +1,144 @@
+---
+title: "Multiple Linear Regression in R"
+author: "Bruno Dos Santos"
+output: html_notebook
+---
+
+# Introduction
+
+In this Notebook, we present a methodology to perform a multiple linear regression. We use data from [Kaggle](https://www.kaggle.com/datasets/harlfoxem/housesalesprediction), named *"House Sales in King County, USA"*, to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
+
+## R notebook
+
+Load R packages used in this notebook:
+
+```{r}
+library("here")
+library("MASS")
+library("lmtest")
+library("psych")
+library("regclass")
+```
+
+Reading the housing data set and creating a data frame:
+
+```{r }
+df <- as.data.frame(read_csv(here("data-raw","kc_house_data.csv")))
+```
+
+Visualizing the first five lines of the data frame:
+
+```{r}
+head(df,5)
+```
+
+The variable `ID` will not be used to perform the regression model, so we will remove if from the data set. Also, the variable date, regarding the date of house sell, does not bring much information because the time range is a few higher than 1 year, so we'll exclude it too. The next chuck select only the variables that we will use for modelling:
+
+```{r}
+df <- df[,3:15]
+```
+
+Visualizing some statistics about the data:
+
+```{r}
+summary(df)
+```
+
+Visualizing scatterplots of the variables (this chunck can take some minutes to run and be hard to visualize the plots dependind on the features amount):
+
+```{r}
+pairs(df)
+```
+
+## Regression models
+
+Let's perform the first regression model. In this case, we will use all variables of the data set to predict the price of the house:
+
+```{r}
+model_lr1 <- lm(df$price ~ . , data = df)
+```
+
+Let's visualize some information about our first model:
+
+```{r}
+summary(model_lr1)
+```
+
+We can see that some coefficients of the first model are not significant, with Pr(\>\|t\|) \> Signif. codes. So, we'll apply a search mode for feature selection. The idea is minimizing the Akaike Information Criteria (AIC) and simplify the model:
+
+```{r}
+model_lr2 <- stepAIC(model_lr1, direction = "both", trace = 1)
+```
+
+Let's visualize some information about our second model:
+
+```{r}
+summary(model_lr2)
+```
+
+According to the summary above, all coefficients are significant. We can check the value of the R-squared, a statistical measure that determines the proportion of variance in the dependent variable that can be explained by the independent variables.
+
+## Diagnosing the regression model
+
+Let's use some diagnostic plots about our regression model (model 2).
+
+-   The first plot is a residual plot vs the fitted values, which evaluate the linearity of the model. If the linearity exist, the red line must be similiar to a horizontal line.
+
+-   The second plot, Q-Q plot, evaluates whether the residuals shows a normal distribution. In this case, if the residual distribution is normal, most of residuals must be above the line.
+
+-   The third plot, Scale-Location, evaluates the homoscedasticity, where the points must be dispersed in rectangular way (not triangular).
+
+-   The fourth plot evaluates the existence of influential points and outlier.
+
+```{r}
+plot(model_lr2)
+```
+
+According the plots above, we can see that some points (3915,7253,9255,15871) have an abnormal behaviour compared to the others, and they can impact the final regression model. Because of this, we'll remove this points of the data set and perform the regressions again. This diagnosis steps can be ran more the once, aiming to find the best model possible.
+
+```{r}
+df <- df[-c(3915,7253,9255,15871),]
+```
+
+After remove the abnormal points, the R-squared increased, showing an improved in the new model.
+
+But analyzing the model using graphs can be hard for some people. Aiming to be more objective, we can use some tests to evaluate our model. The first test is the Shapiro test, used for evaluate the residuals normality. We consider as a normal distribution when the p-value is higher than 0.05 (the Shapiro test requires a samples size between 3 and 5000):
+
+```{r}
+shapiro.test(model_lr2$residuals)
+```
+
+We can use the summary of standard residuals to evaluate the existence of outlier. The minimum and maximum values must have similar absolute values, the mean must be close to zero and the first and third quartiles must have similar absolute values too:
+
+```{r}
+summary(rstandard(model_lr2))
+```
+
+The Breusch-Pagan test evaluates the homoscedasticity of the residuals. To prove the homoscedasticity, the p-value must be higher than 0.05:
+
+```{r}
+bptest(model_lr2)
+```
+
+The VIF test evaluates the multicolinarity between the independent variables. In this case, all variables must have a VIF value less than 10:
+
+```{r}
+VIF(model_lr2)
+```
+
+Finally, we will compare the predicted values with the true values using a scatter plot. In a good model, the predicted values must be close to the blue line:
+
+```{r}
+df$predicted_values <- model_lr2$fitted.values
+
+p <- plot(df$predicted_values, df$price, col='red', cex = 0.5, pch = 19)
+p <- p + abline(lm(df$price~df$predicted_values), lwd=2,col='blue')
+p
+```
+
+Finally, we will save our data frame in the data folder:
+
+```{r}
+usethis::use_data(df,
+                  overwrite = TRUE)
+```
