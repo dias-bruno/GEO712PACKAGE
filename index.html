@@ -44,6 +44,12 @@
 <li class="nav-item">
   <a class="nav-link" href="reference/index.html">Reference</a>
 </li>
+<li class="nav-item dropdown">
+  <a href="#" class="nav-link dropdown-toggle" data-bs-toggle="dropdown" role="button" aria-expanded="false" aria-haspopup="true" id="dropdown-articles">Articles</a>
+  <div class="dropdown-menu" aria-labelledby="dropdown-articles">
+    <a class="dropdown-item" href="articles/dataset.html">House Sales in King County, USA</a>
+  </div>
+</li>
       </ul>
 <form class="form-inline my-2 my-lg-0" role="search">
         <input type="search" class="form-control me-sm-2" aria-label="Toggle navigation" name="search-input" data-search-index="search.json" id="search-input" placeholder="Search for" autocomplete="off">
@@ -116,10 +122,11 @@
 <span><span class="co">#&gt;  Mean   :1971   Mean   : 539157  </span></span>
 <span><span class="co">#&gt;  3rd Qu.:1997   3rd Qu.: 669496  </span></span>
 <span><span class="co">#&gt;  Max.   :2015   Max.   :3126792</span></span></code></pre></div>
-<p>Now, we already have access to the data and we can create some graphs about the data:</p>
+<p>Now, we already have access to the data and we can create some graphs about the data. The next chunk shows the house prices predicted compared to the real values:</p>
 <div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span><span class="va">houses</span><span class="op">$</span><span class="va">price</span>, <span class="va">houses</span><span class="op">$</span><span class="va">yr_built</span>, xlab <span class="op">=</span> <span class="st">"Price of the house"</span>, ylab <span class="op">=</span> <span class="st">"Year of build"</span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html" class="external-link">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">houses</span><span class="op">$</span><span class="va">predicted_values</span>, y <span class="op">=</span> <span class="va">houses</span><span class="op">$</span><span class="va">price</span>, ylab <span class="op">=</span> <span class="st">"House Price ($)"</span>, xlab <span class="op">=</span> <span class="st">"Price ($) Predicted"</span>, col<span class="op">=</span><span class="st">'red'</span>, cex <span class="op">=</span> <span class="fl">0.5</span>, pch <span class="op">=</span> <span class="fl">19</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/graphics/abline.html" class="external-link">abline</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/lm.html" class="external-link">lm</a></span><span class="op">(</span><span class="va">houses</span><span class="op">$</span><span class="va">price</span> <span class="op">~</span> <span class="va">houses</span><span class="op">$</span><span class="va">predicted_values</span><span class="op">)</span>, lwd<span class="op">=</span><span class="fl">2</span>, col<span class="op">=</span><span class="st">'blue'</span><span class="op">)</span></span></code></pre></div>
 <p><img src="reference/figures/README-unnamed-chunk-4-1.png" width="100%"></p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode R"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="co">#&gt; integer(0)</span></span></code></pre></div>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
