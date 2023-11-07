@@ -47,8 +47,8 @@ Visualizing the summary of the data:
 summary(houses)
 ```
 
-Now, we already have access to the data and we can create some graphs about the data:
+Now, we already have access to the data and we can create some graphs about the data. The next chunk shows the house prices predicted compared to the real values:
 
 ```{r}
-plot(houses$price, houses$yr_built, xlab = "Price of the house", ylab = "Year of build")
+plot(x = houses$predicted_values, y = houses$price, ylab = "House Price ($)", xlab = "Price ($) Predicted", col='red', cex = 0.5, pch = 19) + abline(lm(houses$price ~ houses$predicted_values), lwd=2, col='blue')
 ```
