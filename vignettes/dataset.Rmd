@@ -7,13 +7,152 @@ vignette: >
   %\VignetteEncoding{UTF-8}
 ---
 
-```{r, include = FALSE}
+
+```{r setup, include = FALSE}
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>"
 )
+
+library(ggplot2)
+library(reshape2)
 ```
 
-```{r setup}
+
+The GEO712PACKAGE is a test R package created for the GEO712 course at McMaster University (fall term of 2023). In this R package we share the processed data of a multiple regression model. We use a data set from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. The original data set includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
+
+You can install the development version of GEO712PACKAGE from [GitHub](https://github.com/) with:
+
+```{r}
+# install.packages("devtools")
+# library("devtools")
+# devtools::install_github("dias-bruno/GEO712PACKAGE")
+```
+
+This is a basic example which shows you how to access the data files. First, we'll need call the library "GEO712PACKAGE:
+```{r load-packages, include=FALSE, cache=FALSE}
 library(GEO712PACKAGE)
 ```
+
+Accessing the data: 
+```{r}
+data(kc_house_data_processed)
+```
+
+Visualizing the summary of the data:
+```{r}
+summary(kc_house_data_processed)
+```
+
+First, let's visualize the correlation matrix. We'll use the ggplot2 library, an R package for data visualization. Calculate the correlation matrix:
+```{r}
+cormat <- round(cor(kc_house_data_processed),2)
+melted_cormat <- melt(cormat)
+head(melted_cormat)
+```
+
+Creating a correlation heatmap:
+```{r}
+# Function to get lower or upper triangle of the correlation matrix
+get_triangle <- function(cormat, upper = TRUE){
+  if (upper) cormat[lower.tri(cormat)] <- NA
+  else cormat[upper.tri(cormat)] <- NA
+  return(cormat)
+}
+
+# Function to reorder the correlation matrix
+reorder_cormat <- function(cormat){
+  dd <- as.dist((1 - cormat) / 2)
+  hc <- hclust(dd)
+  return(cormat[hc$order, hc$order])
+}
+
+# Reorder and get upper triangle of the correlation matrix
+cormat <- reorder_cormat(cormat)
+upper_tri <- get_triangle(cormat, upper = TRUE)
+
+# Melt the correlation matrix
+melted_cormat <- melt(upper_tri, na.rm = TRUE)
+
+# Create a ggheatmap
+ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value)) +
+  geom_tile(color = "white") +
+  scale_fill_gradient2(low = "blue", high = "red", mid = "white", 
+                       midpoint = 0, limit = c(-1,1), space = "Lab", 
+                       name = "Pearson\nCorrelation") +
+  theme_minimal() +
+  theme(axis.text.x = element_text(angle = 90, vjust = 1, size = 8, hjust = 1)) +
+  coord_fixed()
+
+# Print the heatmap
+print(ggheatmap)
+
+```
+
+We can see the ten variables with the highest positive correlation:
+```{r}
+melted_cormat <- melted_cormat[order(-melted_cormat$value), ]
+melted_cormat[melted_cormat$value != 1,][1:10,]
+```
+The variables "sqft_living" and "sqft_above" show the highest positive correlation. The variable "sqft_living" refers to the area of the living room in square meters, while the variable "sqft_above" refers to the area of the plot in square meters. We can also see that there is a high positive linear correlation between the "price" and the "predicted_value" of the houses. This is a good result because the "predicted_value" is the result of a linear regression used as a model to predict house values. 
+
+We can also see the ten variables with the highest negative correlation:
+```{r}
+melted_cormat <- melted_cormat[order(melted_cormat$value), ]
+melted_cormat[melted_cormat$value != 1,][1:10,]
+```
+
+In general, the variables show more positive correlation than negative correlation. In general, the correlations are coherent, with similar variables having a high positive correlation and contrasting variables showing a negative correlation.
+
+Let's look at the pair graphs for the first five variables: 
+```{r}
+pairs(kc_house_data_processed[,1:5])
+```
+We can create a boxplot to analyze how the price varies depending on some characteristics of the house. Using the "waterfront" feature (meaning whether the house is located by the sea), the code below creates a boxplot chat: 
+```{r}
+kc_house_data_processed$waterfront <- factor(kc_house_data_processed$waterfront)
+
+ggplot(kc_house_data_processed, aes(x = waterfront, y = price)) +
+  geom_boxplot(fill = "skyblue", color = "blue") +
+  labs(title = "Boxplot of Price by Waterfront", x = "Waterfront", y = "Price")
+```
+We can see that houses with a waterfront (=1) have higher values compared to houses without a waterfront (=0). The same analysis can be employed for the "bedrooms" variable, in which house values tend to be higher as the number of bedrooms increases, until it becomes constant (9 < n < 10) and then the house price starts to decrease: 
+```{r}
+kc_house_data_processed$bedrooms <- factor(kc_house_data_processed$bedrooms)
+
+ggplot(kc_house_data_processed, aes(x = bedrooms, y = price)) +
+  geom_boxplot(fill = "skyblue", color = "blue") +
+  labs(title = "Boxplot of Price by Bedrooms", x = "Bedrooms", y = "Price")
+```
+
+Now, let's take a look at some graphs of property prices and the predicted values according to the regression model:
+```{r}
+ggplot(kc_house_data_processed, aes(x = predicted_values)) +
+  geom_histogram(binwidth = 10000, fill = "skyblue", color = "blue", alpha = 0.7) +
+  labs(title = "Histogram of Predicted Values", x = "Predicted Values", y = "Frequency")
+
+ggplot(kc_house_data_processed, aes(x = price)) +
+  geom_histogram(binwidth = 10000, fill = "lightcoral", color = "red", alpha = 0.7) +
+  labs(title = "Histogram of Price Values", x = "Price", y = "Frequency")
+
+```
+Plot a scatter graph of house prices and predicted values:
+```{r}
+ggplot(kc_house_data_processed, aes(x = predicted_values, y = price)) +
+  geom_point(color = "blue", alpha = 0.6) +
+  labs(title = "Scatter Plot of Price vs. Predicted Values", x = "Predicted Values", y = "Price")
+```
+
+It is possible to obtain the regression residuals, which are the difference between the predicted values and the actual values (real prices, in this case):
+```{r}
+kc_house_data_processed$residuals <- kc_house_data_processed$price - kc_house_data_processed$predicted_values
+
+# View the first few rows of the dataframe with residuals
+head(kc_house_data_processed)
+```
+The following code provides a visual representation of the residue distribution:
+```{r}
+kc_house_data_processed$residuals <- kc_house_data_processed$price - kc_house_data_processed$predicted_values
+hist(kc_house_data_processed$residuals, main = "Histogram of Residuals", xlab = "Residuals")
+```
+

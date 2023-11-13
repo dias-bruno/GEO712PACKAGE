@@ -15,7 +15,7 @@ knitr::opts_chunk$set(
 
 # GEO712PACKAGE
 
-The GEO712PACKAGE is a test R package created for the GEO712 course at McMaster University. In this R package we share the processed data of a multiple regression model. We use data from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
+The GEO712PACKAGE is a test R package created for the GEO712 course at McMaster University (fall term of 2023). In this R package we share the processed data of a multiple regression model. We use a data set from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
 
 ## Installation
 

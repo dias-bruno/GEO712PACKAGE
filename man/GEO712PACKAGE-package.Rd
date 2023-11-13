@@ -6,7 +6,7 @@
 \alias{GEO712PACKAGE-package}
 \title{GEO712PACKAGE: A R package for the GEO712 course at McMAster University}
 \description{
-In this R package we present a methodology to perform a multiple linear regression and sharing the data files. We use data from Kaggle, named "House Sales in King County, USA", to predict house price using a regression model. The data set contains house sales prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 registers and 21 variables regarding the houses sold.
+In this R package, we share data processed after a multiple linear regression. We used data from the data science platform Kaggle, called "House Sales in King County, USA", to predict the price of houses sold in some US cities using a regression model. The dataset contains house sale prices for King County, which includes Seattle. It includes homes sold between May 2014 and May 2015, with 21,613 records and 21 variables relating to the homes sold.
 }
 \seealso{
 Useful links:
