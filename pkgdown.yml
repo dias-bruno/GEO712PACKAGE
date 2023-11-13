@@ -3,7 +3,7 @@ pkgdown: 2.0.7
 pkgdown_sha: ~
 articles:
   dataset: dataset.html
-last_built: 2023-11-07T18:57Z
+last_built: 2023-11-13T22:15Z
 urls:
   reference: https://dias-bruno.github.io/GEO712PACKAGE/reference
   article: https://dias-bruno.github.io/GEO712PACKAGE/articles

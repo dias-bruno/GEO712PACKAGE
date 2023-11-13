@@ -77,8 +77,237 @@
 
     
     
+<p>The GEO712PACKAGE is a test R package created for the GEO712 course
+at McMaster University (fall term of 2023). In this R package we share
+the processed data of a multiple regression model. We use a data set
+from Kaggle, named “House Sales in King County, USA”, to predict house
+price using a regression model. The data set contains house sales prices
+for King County, which includes Seattle. The original data set includes
+homes sold between May 2014 and May 2015, with 21,613 registers and 21
+variables regarding the houses sold.</p>
+<p>You can install the development version of GEO712PACKAGE from <a href="https://github.com/" class="external-link">GitHub</a> with:</p>
 <div class="sourceCode" id="cb1"><pre class="downlit sourceCode r">
-<code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://github.com/dias-bruno/GEO712PACKAGE" class="external-link">GEO712PACKAGE</a></span><span class="op">)</span></span></code></pre></div>
+<code class="sourceCode R"><span><span class="co"># install.packages("devtools")</span></span>
+<span><span class="co"># library("devtools")</span></span>
+<span><span class="co"># devtools::install_github("dias-bruno/GEO712PACKAGE")</span></span></code></pre></div>
+<p>This is a basic example which shows you how to access the data files.
+First, we’ll need call the library “GEO712PACKAGE:</p>
+<p>Accessing the data:</p>
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/utils/data.html" class="external-link">data</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">)</span></span></code></pre></div>
+<p>Visualizing the summary of the data:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/base/summary.html" class="external-link">summary</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">)</span></span>
+<span><span class="co">#&gt;      price            bedrooms        bathrooms      sqft_living   </span></span>
+<span><span class="co">#&gt;  Min.   :  75000   Min.   : 0.000   Min.   :0.000   Min.   :  290  </span></span>
+<span><span class="co">#&gt;  1st Qu.: 321838   1st Qu.: 3.000   1st Qu.:1.750   1st Qu.: 1426  </span></span>
+<span><span class="co">#&gt;  Median : 450000   Median : 3.000   Median :2.250   Median : 1910  </span></span>
+<span><span class="co">#&gt;  Mean   : 538176   Mean   : 3.369   Mean   :2.114   Mean   : 2078  </span></span>
+<span><span class="co">#&gt;  3rd Qu.: 645000   3rd Qu.: 4.000   3rd Qu.:2.500   3rd Qu.: 2550  </span></span>
+<span><span class="co">#&gt;  Max.   :4668000   Max.   :11.000   Max.   :8.000   Max.   :13540  </span></span>
+<span><span class="co">#&gt;     sqft_lot           floors        waterfront            view       </span></span>
+<span><span class="co">#&gt;  Min.   :    520   Min.   :1.000   Min.   :0.000000   Min.   :0.0000  </span></span>
+<span><span class="co">#&gt;  1st Qu.:   5040   1st Qu.:1.000   1st Qu.:0.000000   1st Qu.:0.0000  </span></span>
+<span><span class="co">#&gt;  Median :   7616   Median :1.500   Median :0.000000   Median :0.0000  </span></span>
+<span><span class="co">#&gt;  Mean   :  15109   Mean   :1.494   Mean   :0.007414   Mean   :0.2335  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:  10684   3rd Qu.:2.000   3rd Qu.:0.000000   3rd Qu.:0.0000  </span></span>
+<span><span class="co">#&gt;  Max.   :1651359   Max.   :3.500   Max.   :1.000000   Max.   :4.0000  </span></span>
+<span><span class="co">#&gt;    condition         grade          sqft_above   sqft_basement   </span></span>
+<span><span class="co">#&gt;  Min.   :1.000   Min.   : 1.000   Min.   : 290   Min.   :   0.0  </span></span>
+<span><span class="co">#&gt;  1st Qu.:3.000   1st Qu.: 7.000   1st Qu.:1190   1st Qu.:   0.0  </span></span>
+<span><span class="co">#&gt;  Median :3.000   Median : 7.000   Median :1560   Median :   0.0  </span></span>
+<span><span class="co">#&gt;  Mean   :3.409   Mean   : 7.655   Mean   :1787   Mean   : 290.9  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:4.000   3rd Qu.: 8.000   3rd Qu.:2210   3rd Qu.: 560.0  </span></span>
+<span><span class="co">#&gt;  Max.   :5.000   Max.   :13.000   Max.   :9410   Max.   :4820.0  </span></span>
+<span><span class="co">#&gt;     yr_built     yr_renovated        zipcode           lat       </span></span>
+<span><span class="co">#&gt;  Min.   :1900   Min.   :   0.00   Min.   :98001   Min.   :47.16  </span></span>
+<span><span class="co">#&gt;  1st Qu.:1951   1st Qu.:   0.00   1st Qu.:98033   1st Qu.:47.47  </span></span>
+<span><span class="co">#&gt;  Median :1975   Median :   0.00   Median :98065   Median :47.57  </span></span>
+<span><span class="co">#&gt;  Mean   :1971   Mean   :  84.35   Mean   :98078   Mean   :47.56  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:1997   3rd Qu.:   0.00   3rd Qu.:98118   3rd Qu.:47.68  </span></span>
+<span><span class="co">#&gt;  Max.   :2015   Max.   :2015.00   Max.   :98199   Max.   :47.78  </span></span>
+<span><span class="co">#&gt;       long        sqft_living15    sqft_lot15     predicted_values </span></span>
+<span><span class="co">#&gt;  Min.   :-122.5   Min.   : 399   Min.   :   651   Min.   :-508596  </span></span>
+<span><span class="co">#&gt;  1st Qu.:-122.3   1st Qu.:1490   1st Qu.:  5100   1st Qu.: 340290  </span></span>
+<span><span class="co">#&gt;  Median :-122.2   Median :1840   Median :  7620   Median : 489068  </span></span>
+<span><span class="co">#&gt;  Mean   :-122.2   Mean   :1986   Mean   : 12770   Mean   : 538176  </span></span>
+<span><span class="co">#&gt;  3rd Qu.:-122.1   3rd Qu.:2360   3rd Qu.: 10080   3rd Qu.: 678469  </span></span>
+<span><span class="co">#&gt;  Max.   :-121.3   Max.   :6210   Max.   :871200   Max.   :3016522</span></span></code></pre></div>
+<p>First, let’s visualize the correlation matrix. We’ll use the ggplot2
+library, an R package for data visualization. Calculate the correlation
+matrix:</p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">cormat</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html" class="external-link">round</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html" class="external-link">cor</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">)</span>,<span class="fl">2</span><span class="op">)</span></span>
+<span><span class="va">melted_cormat</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">melted_cormat</span><span class="op">)</span></span>
+<span><span class="co">#&gt;          Var1  Var2 value</span></span>
+<span><span class="co">#&gt; 1       price price  1.00</span></span>
+<span><span class="co">#&gt; 2    bedrooms price  0.32</span></span>
+<span><span class="co">#&gt; 3   bathrooms price  0.52</span></span>
+<span><span class="co">#&gt; 4 sqft_living price  0.70</span></span>
+<span><span class="co">#&gt; 5    sqft_lot price  0.09</span></span>
+<span><span class="co">#&gt; 6      floors price  0.26</span></span></code></pre></div>
+<p>Creating a correlation heatmap:</p>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># Function to get lower or upper triangle of the correlation matrix</span></span>
+<span><span class="va">get_triangle</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cormat</span>, <span class="va">upper</span> <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">upper</span><span class="op">)</span> <span class="va">cormat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html" class="external-link">lower.tri</a></span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span>  <span class="kw">else</span> <span class="va">cormat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/lower.tri.html" class="external-link">upper.tri</a></span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span><span class="op">]</span> <span class="op">&lt;-</span> <span class="cn">NA</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Function to reorder the correlation matrix</span></span>
+<span><span class="va">reorder_cormat</span> <span class="op">&lt;-</span> <span class="kw">function</span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">dd</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/dist.html" class="external-link">as.dist</a></span><span class="op">(</span><span class="op">(</span><span class="fl">1</span> <span class="op">-</span> <span class="va">cormat</span><span class="op">)</span> <span class="op">/</span> <span class="fl">2</span><span class="op">)</span></span>
+<span>  <span class="va">hc</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/stats/hclust.html" class="external-link">hclust</a></span><span class="op">(</span><span class="va">dd</span><span class="op">)</span></span>
+<span>  <span class="kw"><a href="https://rdrr.io/r/base/function.html" class="external-link">return</a></span><span class="op">(</span><span class="va">cormat</span><span class="op">[</span><span class="va">hc</span><span class="op">$</span><span class="va">order</span>, <span class="va">hc</span><span class="op">$</span><span class="va">order</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Reorder and get upper triangle of the correlation matrix</span></span>
+<span><span class="va">cormat</span> <span class="op">&lt;-</span> <span class="fu">reorder_cormat</span><span class="op">(</span><span class="va">cormat</span><span class="op">)</span></span>
+<span><span class="va">upper_tri</span> <span class="op">&lt;-</span> <span class="fu">get_triangle</span><span class="op">(</span><span class="va">cormat</span>, upper <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Melt the correlation matrix</span></span>
+<span><span class="va">melted_cormat</span> <span class="op">&lt;-</span> <span class="fu">melt</span><span class="op">(</span><span class="va">upper_tri</span>, na.rm <span class="op">=</span> <span class="cn">TRUE</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create a ggheatmap</span></span>
+<span><span class="va">ggheatmap</span> <span class="op">&lt;-</span> <span class="fu">ggplot</span><span class="op">(</span><span class="va">melted_cormat</span>, <span class="fu">aes</span><span class="op">(</span><span class="va">Var2</span>, <span class="va">Var1</span>, fill <span class="op">=</span> <span class="va">value</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_tile</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"white"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">scale_fill_gradient2</span><span class="op">(</span>low <span class="op">=</span> <span class="st">"blue"</span>, high <span class="op">=</span> <span class="st">"red"</span>, mid <span class="op">=</span> <span class="st">"white"</span>, </span>
+<span>                       midpoint <span class="op">=</span> <span class="fl">0</span>, limit <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html" class="external-link">c</a></span><span class="op">(</span><span class="op">-</span><span class="fl">1</span>,<span class="fl">1</span><span class="op">)</span>, space <span class="op">=</span> <span class="st">"Lab"</span>, </span>
+<span>                       name <span class="op">=</span> <span class="st">"Pearson\nCorrelation"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme_minimal</span><span class="op">(</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">theme</span><span class="op">(</span>axis.text.x <span class="op">=</span> <span class="fu">element_text</span><span class="op">(</span>angle <span class="op">=</span> <span class="fl">90</span>, vjust <span class="op">=</span> <span class="fl">1</span>, size <span class="op">=</span> <span class="fl">8</span>, hjust <span class="op">=</span> <span class="fl">1</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">coord_fixed</span><span class="op">(</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Print the heatmap</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/print.html" class="external-link">print</a></span><span class="op">(</span><span class="va">ggheatmap</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-5-1.png" width="700"></p>
+<p>We can see the ten variables with the highest positive
+correlation:</p>
+<div class="sourceCode" id="cb6"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">melted_cormat</span> <span class="op">&lt;-</span> <span class="va">melted_cormat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="op">-</span><span class="va">melted_cormat</span><span class="op">$</span><span class="va">value</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">melted_cormat</span><span class="op">[</span><span class="va">melted_cormat</span><span class="op">$</span><span class="va">value</span> <span class="op">!=</span> <span class="fl">1</span>,<span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;                 Var1             Var2 value</span></span>
+<span><span class="co">#&gt; 210      sqft_living       sqft_above  0.87</span></span>
+<span><span class="co">#&gt; 126            price predicted_values  0.84</span></span>
+<span><span class="co">#&gt; 187 predicted_values      sqft_living  0.83</span></span>
+<span><span class="co">#&gt; 167 predicted_values            grade  0.80</span></span>
+<span><span class="co">#&gt; 188    sqft_living15      sqft_living  0.76</span></span>
+<span><span class="co">#&gt; 189            grade      sqft_living  0.76</span></span>
+<span><span class="co">#&gt; 209            grade       sqft_above  0.75</span></span>
+<span><span class="co">#&gt; 250      sqft_living        bathrooms  0.75</span></span>
+<span><span class="co">#&gt; 208    sqft_living15       sqft_above  0.73</span></span>
+<span><span class="co">#&gt; 42          sqft_lot       sqft_lot15  0.72</span></span></code></pre></div>
+<p>The variables “sqft_living” and “sqft_above” show the highest
+positive correlation. The variable “sqft_living” refers to the area of
+the living room in square meters, while the variable “sqft_above” refers
+to the area of the plot in square meters. We can also see that there is
+a high positive linear correlation between the “price” and the
+“predicted_value” of the houses. This is a good result because the
+“predicted_value” is the result of a linear regression used as a model
+to predict house values.</p>
+<p>We can also see the ten variables with the highest negative
+correlation:</p>
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">melted_cormat</span> <span class="op">&lt;-</span> <span class="va">melted_cormat</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/order.html" class="external-link">order</a></span><span class="op">(</span><span class="va">melted_cormat</span><span class="op">$</span><span class="va">value</span><span class="op">)</span>, <span class="op">]</span></span>
+<span><span class="va">melted_cormat</span><span class="op">[</span><span class="va">melted_cormat</span><span class="op">$</span><span class="va">value</span> <span class="op">!=</span> <span class="fl">1</span>,<span class="op">]</span><span class="op">[</span><span class="fl">1</span><span class="op">:</span><span class="fl">10</span>,<span class="op">]</span></span>
+<span><span class="co">#&gt;              Var1          Var2 value</span></span>
+<span><span class="co">#&gt; 321          long       zipcode -0.56</span></span>
+<span><span class="co">#&gt; 365      yr_built     condition -0.36</span></span>
+<span><span class="co">#&gt; 325      yr_built       zipcode -0.35</span></span>
+<span><span class="co">#&gt; 328 sqft_living15       zipcode -0.28</span></span>
+<span><span class="co">#&gt; 331    sqft_above       zipcode -0.26</span></span>
+<span><span class="co">#&gt; 364        floors     condition -0.26</span></span>
+<span><span class="co">#&gt; 384        floors sqft_basement -0.25</span></span>
+<span><span class="co">#&gt; 265      yr_built  yr_renovated -0.22</span></span>
+<span><span class="co">#&gt; 330   sqft_living       zipcode -0.20</span></span>
+<span><span class="co">#&gt; 333     bathrooms       zipcode -0.20</span></span></code></pre></div>
+<p>In general, the variables show more positive correlation than
+negative correlation. In general, the correlations are coherent, with
+similar variables having a high positive correlation and contrasting
+variables showing a negative correlation.</p>
+<p>Let’s look at the pair graphs for the first five variables:</p>
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu"><a href="https://rdrr.io/r/graphics/pairs.html" class="external-link">pairs</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">:</span><span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-8-1.png" width="700">
+We can create a boxplot to analyze how the price varies depending on
+some characteristics of the house. Using the “waterfront” feature
+(meaning whether the house is located by the sea), the code below
+creates a boxplot chat:</p>
+<div class="sourceCode" id="cb9"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">waterfront</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">waterfront</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">kc_house_data_processed</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">waterfront</span>, y <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_boxplot</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"skyblue"</span>, color <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Boxplot of Price by Waterfront"</span>, x <span class="op">=</span> <span class="st">"Waterfront"</span>, y <span class="op">=</span> <span class="st">"Price"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-9-1.png" width="700">
+We can see that houses with a waterfront (=1) have higher values
+compared to houses without a waterfront (=0). The same analysis can be
+employed for the “bedrooms” variable, in which house values tend to be
+higher as the number of bedrooms increases, until it becomes constant (9
+&lt; n &lt; 10) and then the house price starts to decrease:</p>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">bedrooms</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/factor.html" class="external-link">factor</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">bedrooms</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">kc_house_data_processed</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">bedrooms</span>, y <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_boxplot</span><span class="op">(</span>fill <span class="op">=</span> <span class="st">"skyblue"</span>, color <span class="op">=</span> <span class="st">"blue"</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Boxplot of Price by Bedrooms"</span>, x <span class="op">=</span> <span class="st">"Bedrooms"</span>, y <span class="op">=</span> <span class="st">"Price"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-10-1.png" width="700"></p>
+<p>Now, let’s take a look at some graphs of property prices and the
+predicted values according to the regression model:</p>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">kc_house_data_processed</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">predicted_values</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">10000</span>, fill <span class="op">=</span> <span class="st">"skyblue"</span>, color <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Histogram of Predicted Values"</span>, x <span class="op">=</span> <span class="st">"Predicted Values"</span>, y <span class="op">=</span> <span class="st">"Frequency"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-11-1.png" width="700"></p>
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span></span>
+<span><span class="fu">ggplot</span><span class="op">(</span><span class="va">kc_house_data_processed</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_histogram</span><span class="op">(</span>binwidth <span class="op">=</span> <span class="fl">10000</span>, fill <span class="op">=</span> <span class="st">"lightcoral"</span>, color <span class="op">=</span> <span class="st">"red"</span>, alpha <span class="op">=</span> <span class="fl">0.7</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Histogram of Price Values"</span>, x <span class="op">=</span> <span class="st">"Price"</span>, y <span class="op">=</span> <span class="st">"Frequency"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-11-2.png" width="700">
+Plot a scatter graph of house prices and predicted values:</p>
+<div class="sourceCode" id="cb13"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="fu">ggplot</span><span class="op">(</span><span class="va">kc_house_data_processed</span>, <span class="fu">aes</span><span class="op">(</span>x <span class="op">=</span> <span class="va">predicted_values</span>, y <span class="op">=</span> <span class="va">price</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">geom_point</span><span class="op">(</span>color <span class="op">=</span> <span class="st">"blue"</span>, alpha <span class="op">=</span> <span class="fl">0.6</span><span class="op">)</span> <span class="op">+</span></span>
+<span>  <span class="fu">labs</span><span class="op">(</span>title <span class="op">=</span> <span class="st">"Scatter Plot of Price vs. Predicted Values"</span>, x <span class="op">=</span> <span class="st">"Predicted Values"</span>, y <span class="op">=</span> <span class="st">"Price"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-12-1.png" width="700"></p>
+<p>It is possible to obtain the regression residuals, which are the
+difference between the predicted values and the actual values (real
+prices, in this case):</p>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">price</span> <span class="op">-</span> <span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">predicted_values</span></span>
+<span></span>
+<span><span class="co"># View the first few rows of the dataframe with residuals</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/head.html" class="external-link">head</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">)</span></span>
+<span><span class="co">#&gt;     price bedrooms bathrooms sqft_living sqft_lot floors waterfront view</span></span>
+<span><span class="co">#&gt; 1  221900        3      1.00        1180     5650      1          0    0</span></span>
+<span><span class="co">#&gt; 2  538000        3      2.25        2570     7242      2          0    0</span></span>
+<span><span class="co">#&gt; 3  180000        2      1.00         770    10000      1          0    0</span></span>
+<span><span class="co">#&gt; 4  604000        4      3.00        1960     5000      1          0    0</span></span>
+<span><span class="co">#&gt; 5  510000        3      2.00        1680     8080      1          0    0</span></span>
+<span><span class="co">#&gt; 6 1225000        4      4.50        5420   101930      1          0    0</span></span>
+<span><span class="co">#&gt;   condition grade sqft_above sqft_basement yr_built yr_renovated zipcode</span></span>
+<span><span class="co">#&gt; 1         3     7       1180             0     1955            0   98178</span></span>
+<span><span class="co">#&gt; 2         3     7       2170           400     1951         1991   98125</span></span>
+<span><span class="co">#&gt; 3         3     6        770             0     1933            0   98028</span></span>
+<span><span class="co">#&gt; 4         5     7       1050           910     1965            0   98136</span></span>
+<span><span class="co">#&gt; 5         3     8       1680             0     1987            0   98074</span></span>
+<span><span class="co">#&gt; 6         3    11       3890          1530     2001            0   98053</span></span>
+<span><span class="co">#&gt;       lat     long sqft_living15 sqft_lot15 predicted_values   residuals</span></span>
+<span><span class="co">#&gt; 1 47.5112 -122.257          1340       5650         216186.4    5713.553</span></span>
+<span><span class="co">#&gt; 2 47.7210 -122.319          1690       7639         715102.2 -177102.187</span></span>
+<span><span class="co">#&gt; 3 47.7379 -122.233          2720       8062         402052.2 -222052.186</span></span>
+<span><span class="co">#&gt; 4 47.5208 -122.393          1360       5000         452637.5  151362.530</span></span>
+<span><span class="co">#&gt; 5 47.6168 -122.045          1800       7503         444936.2   65063.816</span></span>
+<span><span class="co">#&gt; 6 47.6561 -122.005          4760     101930        1431551.4 -206551.391</span></span></code></pre></div>
+<p>The following code provides a visual representation of the residue
+distribution:</p>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">residuals</span> <span class="op">&lt;-</span> <span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">price</span> <span class="op">-</span> <span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">predicted_values</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html" class="external-link">hist</a></span><span class="op">(</span><span class="va">kc_house_data_processed</span><span class="op">$</span><span class="va">residuals</span>, main <span class="op">=</span> <span class="st">"Histogram of Residuals"</span>, xlab <span class="op">=</span> <span class="st">"Residuals"</span><span class="op">)</span></span></code></pre></div>
+<p><img src="dataset_files/figure-html/unnamed-chunk-14-1.png" width="700"></p>
   </main>
 </div>
 
